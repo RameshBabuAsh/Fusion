@@ -398,3 +398,61 @@ class faculty_about(models.Model):
 
     def __str__(self):
         return str(self.user)
+    
+class AdministrativePosition(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=255, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    from_date = models.DateField(null=True, blank=True)
+    to_date = models.DateField(null=True, blank=True)
+    created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)
+    updated_at = models.DateTimeField(null=True, blank=True, auto_now=True)
+
+    class Meta:
+        unique_together = ('user', 'title')
+
+    def __str__(self):
+        return f"{self.user.username} - {self.title}"
+    
+class Honor(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=255)  # NOT NULL constraint
+    period = models.CharField(max_length=255, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)
+    updated_at = models.DateTimeField(null=True, blank=True, auto_now=True)
+
+    class Meta:
+        unique_together = ('user', 'title')
+
+    def __str__(self):
+        return f"{self.user.username} - {self.title}"
+    
+class ProfessionalExperience(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=255, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    from_date = models.DateField(null=True, blank=True)
+    to_date = models.DateField(null=True, blank=True)
+    created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)
+    updated_at = models.DateTimeField(null=True, blank=True, auto_now=True)
+
+    class Meta:
+        unique_together = ('user', 'title')
+
+    def __str__(self):
+        return f"{self.user.username} - {self.title}"
+    
+class Qualification(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    degree = models.CharField(max_length=255)
+    college = models.CharField(max_length=255)
+    description = models.TextField(null=True, blank=True)
+    created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)
+    updated_at = models.DateTimeField(null=True, blank=True, auto_now=True)
+
+    class Meta:
+        unique_together = ('user', 'degree')
+
+    def __str__(self):
+        return f"{self.user.username} - {self.degree} from {self.college}"

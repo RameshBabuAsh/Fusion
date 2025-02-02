@@ -29,3 +29,8 @@ admin.site.register(emp_techtransfer)
 admin.site.register(emp_achievement)
 
 admin.site.register(faculty_about)
+
+admin.site.register(AdministrativePosition)
+admin.site.register(Honor)
+admin.site.register(ProfessionalExperience)
+admin.site.register(Qualification)

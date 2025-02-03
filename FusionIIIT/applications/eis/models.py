@@ -401,6 +401,7 @@ class faculty_about(models.Model):
     
 class AdministrativePosition(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    pf_no = models.CharField(max_length=20)
     title = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     from_date = models.DateField(null=True, blank=True)
@@ -416,6 +417,7 @@ class AdministrativePosition(models.Model):
     
 class Honor(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    pf_no = models.CharField(max_length=20)
     title = models.CharField(max_length=255)  # NOT NULL constraint
     period = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
@@ -430,6 +432,7 @@ class Honor(models.Model):
     
 class ProfessionalExperience(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    pf_no = models.CharField(max_length=20)
     title = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     from_date = models.DateField(null=True, blank=True)
@@ -445,6 +448,7 @@ class ProfessionalExperience(models.Model):
     
 class Qualification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    pf_no = models.CharField(max_length=20)
     degree = models.CharField(max_length=255)
     college = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)

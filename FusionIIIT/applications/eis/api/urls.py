@@ -71,6 +71,7 @@ urlpatterns = [
     # Fetch Details from Database
     re_path(r'^get_personal_info/$', views.get_personal_info, name='get_personal_info'),
     re_path(r'^projects/pf_no/$', views.get_research_projects, name='projects_by_pf_no'),
+    re_path(r'^projects/all/$', views.get_all_research_projects, name='projects_all'),
     re_path(r'^consultancy_projects/pf_no/$', views.get_consultancy_projects, name='consultancy_projects_by_pf_no'),
     re_path(r'^patents/pf_no/$', views.get_patents, name='patents_by_pf_no'),
     re_path(r'^pg_thesis/pf_no/$', views.get_pg_thesis, name='pg_thesis_by_pf_no'),
@@ -97,4 +98,29 @@ urlpatterns = [
     re_path(r'^fetch_journal_or_conference/filter/$', views.filter_journal_or_conference, name="get_journals_or_conference_of_prof_filter"),
     re_path(r'^award/filter/$', views.filter_achievements, name="get_achievements_of_prof_filter"),
     re_path(r'^talk/filter/$', views.filter_talks, name="get_talks_of_prof_filter"),
+
+    # special
+
+    re_path(r'^get_id/$', views.get_all_faculty_ids, name='get_all_faculty_ids'),
+
+    # 4 forms
+
+    re_path(r'^add_administrative_position/$', views.add_administrative_position, name='add_administrative_position'),
+    re_path(r'^get_administrative_positions/$', views.get_administrative_position, name='get_administrative_positions'),
+    re_path(r'^delete_administrative_position/$', views.delete_administrative_position, name='delete_administrative_position'),
+
+    re_path(r'^add_qualification/$', views.add_qualification, name='add_qualification'),
+    re_path(r'^get_qualifications/$', views.get_qualifications, name='get_qualifications'),
+    re_path(r'^delete_qualification/$', views.delete_qualification, name='delete_qualification'),
+
+    re_path(r'^add_honor/$', views.add_honor, name='add_honor'),
+    re_path(r'^get_honors/$', views.get_honors, name='get_honors'),
+    re_path(r'^delete_honor/$', views.delete_honor, name='delete_honor'),
+
+    re_path(r'^add_professional_experience/$', views.add_professional_experience, name='add_professional_experience'),
+    re_path(r'^get_professional_experiences/$', views.get_professional_experiences, name='get_professional_experiences'),
+    re_path(r'^delete_professional_experience/$', views.delete_professional_experience, name='delete_professional_experience'),
+
+    # csrf
+    re_path(r'^csrf/$', views.get_csrf_token, name='csrf'), 
 ]

@@ -399,8 +399,8 @@ class faculty_about(models.Model):
     def __str__(self):
         return str(self.user)
     
-class AdministrativePosition(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+class emp_administrative_position(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     pf_no = models.CharField(max_length=20)
     title = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
@@ -415,8 +415,8 @@ class AdministrativePosition(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.title}"
     
-class Honor(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+class emp_honors(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     pf_no = models.CharField(max_length=20)
     title = models.CharField(max_length=255)  # NOT NULL constraint
     period = models.CharField(max_length=255, null=True, blank=True)
@@ -430,8 +430,8 @@ class Honor(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.title}"
     
-class ProfessionalExperience(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+class emp_professional_experience(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     pf_no = models.CharField(max_length=20)
     title = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
@@ -446,8 +446,8 @@ class ProfessionalExperience(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.title}"
     
-class Qualification(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+class emp_qualifications(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     pf_no = models.CharField(max_length=20)
     degree = models.CharField(max_length=255)
     college = models.CharField(max_length=255)

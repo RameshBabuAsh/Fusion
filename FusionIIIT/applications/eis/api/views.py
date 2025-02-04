@@ -2649,6 +2649,13 @@ def get_consym(request):
 
     return JsonResponse(list(projects), safe=False)
 
+def get_all_research_projects(request):
+    # Fetch all entries where pf_no is '5318'
+    projects = emp_research_projects.objects.values()
+
+    return JsonResponse(list(projects), safe=False)
+
+
 # def get_books(request):
 #     # Fetch all entries where pf_no is '5318'
 #     books = emp_published_books.objects.filter(pf_no="5318").order_by('-pyear').values()
@@ -2681,7 +2688,7 @@ def get_talks(request):
 
     return JsonResponse(list(talks), safe=False)
 
-@csrf_exempt
+
 def edit_research_project(request, pk):
     """
     Edit an existing research project entry in the emp_research_projects table.
@@ -3611,3 +3618,200 @@ def filter_talks(request):
 #     "sort_by": "-l_date",
 #     "fields": ["pf_no", "l_type", "title", "place", "l_date"]
 # }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+from django.db import connection
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+
+# @csrf_exempt
+# @api_view(['GET'])
+def get_all_faculty_ids(request):
+    """
+    Fetch all unique id and user_id from the globals_extra_info table where user_type is 'faculty'.
+    Returns a list of id and user_id combinations.
+    """
+    # try:
+        # Fetch data using Django ORM
+    faculty_data = ExtraInfo.objects.filter(user_type='faculty').values('id', 'user_id').order_by('user_id')
+    
+    # Convert the QuerySet to a list
+    response_data = list(faculty_data)
+    
+    return JsonResponse(response_data, safe=False)
+    
+    # except Exception as e:
+    #     return JsonResponse(
+    #         {"error": f"Failed to fetch faculty IDs: {str(e)}"},
+    #         status=500
+    #     )
+
+@csrf_exempt
+def add_administrative_position(request):
+    # Get user based on user_id
+    user = get_object_or_404(faculty_about, user_id=request.POST.get('user_id'))
+    pf = user.user_id
+
+    # Create new instance or get existing one
+    if (request.POST.get('position_id')==None or request.POST.get('position_id') == ""):
+        position = emp_administrative_position()
+    else:
+        position = get_object_or_404(emp_administrative_position, id=request.POST.get('position_id'))
+    
+    # Update fields
+    position.pf_no = pf
+    position.title = request.POST.get('title')
+    position.description = request.POST.get('description')
+    position.from_date = request.POST.get('from_date')
+    position.to_date = request.POST.get('to_date')
+    position.save()
+    
+    return JsonResponse({'success': True})
+
+def get_administrative_position(request):
+    positions = emp_administrative_position.objects.filter(pf_no=request.GET.get("pfNo")).values()
+    return JsonResponse(list(positions), safe=False)
+
+@csrf_exempt
+def delete_administrative_position(request):
+    instance = emp_administrative_position.objects.get(pk=request.POST['pk'])
+    instance.delete()
+    return JsonResponse({'success': True})
+
+
+
+
+
+
+@csrf_exempt
+def add_qualification(request):
+    """Create or update a qualification entry."""
+    # Get user based on user_id
+    user = get_object_or_404(User, id=request.POST.get('user_id'))
+    pf = request.POST.get('user_id')
+
+    # Create a new qualification or update an existing one
+    if request.POST.get('qualification_id') is None or request.POST.get('qualification_id') == "":
+        qualification = emp_qualifications()
+    else:
+        qualification = get_object_or_404(emp_qualifications, id=request.POST.get('qualification_id'))
+
+    # Update fields
+    qualification.pf_no = pf
+    qualification.degree = request.POST.get('degree')
+    qualification.college = request.POST.get('college')
+    qualification.description = request.POST.get('description')
+    qualification.save()
+
+    return JsonResponse({'success': True})
+
+def get_qualifications(request):
+    """Fetch all qualifications for a given user (based on pf_no)."""
+    qualifications = emp_qualifications.objects.filter(pf_no=request.GET.get("pfNo")).values()
+    return JsonResponse(list(qualifications), safe=False)
+
+@csrf_exempt
+def delete_qualification(request):
+    """Delete a qualification entry by primary key."""
+    instance = get_object_or_404(emp_qualifications, pk=request.POST.get('pk'))
+    instance.delete()
+    return JsonResponse({'success': True})
+
+
+
+
+
+
+
+@csrf_exempt
+def add_honor(request):
+    """Create or update an honor entry."""
+    # Get user based on user_id
+    user = get_object_or_404(User, id=request.POST.get('user_id'))
+    pf = request.POST.get('user_id')
+
+    # Create a new honor or update an existing one
+    if request.POST.get('honor_id') is None or request.POST.get('honor_id') == "":
+        honor = emp_honors()
+    else:
+        honor = get_object_or_404(emp_honors, id=request.POST.get('honor_id'))
+
+    # Update fields
+    honor.pf_no = pf
+    honor.title = request.POST.get('title')
+    honor.period = request.POST.get('period')
+    honor.description = request.POST.get('description')
+    honor.save()
+
+    return JsonResponse({'success': True})
+
+def get_honors(request):
+    """Fetch all honors for a given user (based on pf_no)."""
+    honors = emp_honors.objects.filter(pf_no=request.GET.get("pfNo")).values()
+    return JsonResponse(list(honors), safe=False)
+
+@csrf_exempt
+def delete_honor(request):
+    """Delete an honor entry by primary key."""
+    instance = get_object_or_404(emp_honors, pk=request.POST.get('pk'))
+    instance.delete()
+    return JsonResponse({'success': True})
+
+
+
+
+
+@csrf_exempt
+def add_professional_experience(request):
+    """Create or update a professional experience entry."""
+    # Get user based on user_id
+    user = get_object_or_404(User, id=request.POST.get('user_id'))
+    pf = request.POST.get('user_id')
+
+    # Create a new experience or update an existing one
+    if request.POST.get('experience_id') is None or request.POST.get('experience_id') == "":
+        experience = emp_professional_experience()
+    else:
+        experience = get_object_or_404(emp_professional_experience, id=request.POST.get('experience_id'))
+
+    # Update fields
+    experience.pf_no = pf
+    experience.title = request.POST.get('title')
+    experience.description = request.POST.get('description')
+    experience.from_date = request.POST.get('from_date')
+    experience.to_date = request.POST.get('to_date')
+    experience.save()
+
+    return JsonResponse({'success': True})
+
+def get_professional_experiences(request):
+    """Fetch all professional experiences for a given user (based on pf_no)."""
+    experiences = emp_professional_experience.objects.filter(pf_no=request.GET.get("pfNo")).values()
+    return JsonResponse(list(experiences), safe=False)
+
+@csrf_exempt
+def delete_professional_experience(request):
+    """Delete a professional experience entry by primary key."""
+    instance = get_object_or_404(emp_professional_experience, pk=request.POST.get('pk'))
+    instance.delete()
+    return JsonResponse({'success': True})
+
+from django.middleware.csrf import get_token
+
+def get_csrf_token(request):
+    print("here")
+    return JsonResponse({'csrfToken': get_token(request)})
